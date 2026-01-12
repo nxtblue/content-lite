@@ -39,4 +39,11 @@ describe('loadMarkdownFile', () => {
       loadMarkdownFile('./test-fixtures/non-existent.md');
     }).toThrow(ContentError);
   });
+
+  it('should load MDX files', () => {
+    const content = loadMarkdownFile('./test-fixtures/mdx-posts/post-1.mdx');
+    expect(typeof content).toBe('string');
+    expect(content).toContain('# My First MDX Post');
+    expect(content).toContain('<Button>Click me</Button>');
+  });
 });

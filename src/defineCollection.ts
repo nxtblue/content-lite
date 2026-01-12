@@ -1,21 +1,21 @@
-import { extname } from 'node:path';
+import { extname } from 'path';
 import type { Collection, CollectionConfig } from './types.js';
 import { loadJsonCollection } from './loaders/loadJsonCollection.js';
 import { loadMarkdownCollection } from './loaders/loadMarkdownCollection.js';
 import { validateItems } from './validate.js';
 
 /**
- * Defines a content collection from a JSON file or Markdown directory
+ * Defines a content collection from a JSON file or Markdown/MDX directory
  * 
  * This function loads content synchronously at import/build time,
  * validates items if a schema is provided, and applies transformations.
  * 
  * Format is inferred from the path if not explicitly provided:
  * - Paths ending in .json → "json"
- * - Otherwise → "md"
+ * - Otherwise → "md" (supports both .md and .mdx files)
  * 
  * For JSON: loads an array from a single JSON file
- * For Markdown: loads all .md files from a directory, each file becomes one item
+ * For Markdown/MDX: loads all .md and .mdx files from a directory, each file becomes one item
  * 
  * @param config - Collection configuration
  * @returns A collection instance with all() and getById() methods
@@ -37,7 +37,7 @@ export function defineCollection<T extends { id?: string }>(
   }
 
   // Validate if schema is provided
-  // For Markdown, schema validates frontmatter only (body is always included)
+  // For Markdown/MDX, schema validates frontmatter only (body is always included)
   if (schema) {
     items = validateItems(items, schema, path);
   }

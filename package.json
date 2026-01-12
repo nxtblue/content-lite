@@ -1,15 +1,21 @@
 {
   "name": "@nxtblue/content-lite",
-  "version": "1.0.0",
-  "description": "A lightweight, type-safe content loader for static sites using JSON and Markdown",
+  "version": "1.1.0",
+  "description": "A lightweight, type-safe content loader for static sites using JSON and Markdown/MDX",
   "keywords": [
     "content",
     "json",
     "markdown",
+    "mdx",
     "static-site",
     "type-safe",
     "cms",
-    "contentlayer"
+    "nextjs",
+    "next",
+    "react",
+    "vite",
+    "astro",
+    "remix"
   ],
   "homepage": "https://github.com/nxtblue/content-lite#readme",
   "bugs": {
@@ -25,11 +31,16 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   },
   "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "files": [
     "dist"
   ],

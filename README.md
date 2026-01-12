@@ -1,8 +1,8 @@
 # content-lite
 
-A lightweight, type-safe content loader for static sites using JSON collections and Markdown files with frontmatter. A minimal alternative to Contentlayer and traditional CMS tools.
+A lightweight, type-safe content loader for static sites using JSON collections and Markdown/MDX files with frontmatter. A minimal alternative to Contentlayer and traditional CMS tools.
 
-**JSON and Markdown work independently by default.** You can use JSON collections, Markdown collections with frontmatter, or optionally link them together for advanced use cases.
+**JSON and Markdown/MDX work independently by default.** You can use JSON collections, Markdown/MDX collections with frontmatter, or optionally link them together for advanced use cases.
 
 ## Problem Statement
 
@@ -54,21 +54,23 @@ const allPosts = posts.all();
 const post = posts.getById('my-post-id');
 ```
 
-### Markdown Collections
+### Markdown/MDX Collections
 
 ```typescript
 import { defineCollection } from '@nxtblue/content-lite';
 
-// Define a collection from a directory of Markdown files
+// Define a collection from a directory of Markdown or MDX files
 const posts = defineCollection({
-  path: './content/posts', // Directory containing .md files
+  path: './content/posts', // Directory containing .md or .mdx files
   format: 'md', // Optional: inferred from path if not provided
 });
 
-// Each .md file becomes one item with frontmatter + body
+// Each .md or .mdx file becomes one item with frontmatter + body
 const allPosts = posts.all();
 const post = posts.getById('my-post-id');
 ```
+
+**MDX Support:** The package supports both `.md` and `.mdx` files. MDX files are treated as pass-through (raw content is returned in the `body` field). MDX compilation should be handled by your build pipeline (Next.js MDX plugin, Vite MDX plugin, etc.).
 
 ## Recommended Usage Patterns
 
@@ -84,15 +86,16 @@ Use JSON collections when:
 
 JSON collections are completely standalone and work independently of Markdown collections.
 
-### Pattern 2: Markdown Collections with Frontmatter (Standalone)
+### Pattern 2: Markdown/MDX Collections with Frontmatter (Standalone)
 
-Use Markdown collections when:
-- You prefer writing content in Markdown
+Use Markdown/MDX collections when:
+- You prefer writing content in Markdown or MDX
 - You want to keep content and metadata together in each file
 - You're building blogs, documentation, or content-heavy sites
 - You want a file-per-item structure
+- You need React components in your content (MDX)
 
-Markdown frontmatter collections are a valid standalone pattern. Each `.md` file contains frontmatter (YAML metadata) and body content, and works independently of JSON collections.
+Markdown/MDX frontmatter collections are a valid standalone pattern. Each `.md` or `.mdx` file contains frontmatter (YAML metadata) and body content, and works independently of JSON collections. You can mix `.md` and `.mdx` files in the same directory.
 
 ### Pattern 3: JSON → Markdown Linking (Optional Advanced Pattern)
 
@@ -281,13 +284,13 @@ const allProducts = products.all();
 - If a referenced Markdown file is missing, the build will fail with a clear error message
 - The error includes both the JSON file path and the missing Markdown file path
 
-## Markdown Collections
+## Markdown/MDX Collections
 
-Markdown collections with frontmatter are a **valid standalone pattern**. Each Markdown file contains frontmatter (YAML metadata) and body content, and works independently of JSON collections.
+Markdown/MDX collections with frontmatter are a **valid standalone pattern**. Each Markdown or MDX file contains frontmatter (YAML metadata) and body content, and works independently of JSON collections. You can mix `.md` and `.mdx` files in the same directory.
 
 ### Example Markdown Structure
 
-Create a directory (e.g., `content/posts/`) and add `.md` files with frontmatter:
+Create a directory (e.g., `content/posts/`) and add `.md` or `.mdx` files with frontmatter:
 
 **content/posts/getting-started.md:**
 ```markdown
@@ -334,9 +337,37 @@ category: guide
 Static site generators have revolutionized web development...
 ```
 
-Each `.md` file becomes one item in the collection. The frontmatter (YAML between `---`) becomes properties, and the markdown content becomes the `body` property.
+**content/posts/using-components.mdx:**
+```mdx
+---
+id: using-components
+title: Using React Components in MDX
+slug: using-components
+published: true
+publishedAt: 2024-01-25
+author: Jane Smith
+tags:
+  - mdx
+  - react
+category: tutorial
+---
 
-### Using Markdown Collections
+# Using React Components in MDX
+
+MDX allows you to use React components directly in your content.
+
+<Alert type="info">
+  This is an alert component!
+</Alert>
+
+## Code Examples
+
+You can embed interactive components in your content.
+```
+
+Each `.md` or `.mdx` file becomes one item in the collection. The frontmatter (YAML between `---`) becomes properties, and the markdown/MDX content becomes the `body` property.
+
+### Using Markdown/MDX Collections
 
 ```typescript
 import { defineCollection } from '@nxtblue/content-lite';
@@ -351,7 +382,7 @@ const postSchema = z.object({
   author: z.string(),
   tags: z.array(z.string()),
   category: z.string(),
-  body: z.string(), // Raw markdown content
+  body: z.string(), // Raw markdown/MDX content
 });
 
 const posts = defineCollection({
@@ -617,18 +648,18 @@ These limitations are by design to keep the library lightweight, focused, and co
 
 ### `defineCollection<T>(config)`
 
-Defines a content collection from a JSON file or Markdown directory.
+Defines a content collection from a JSON file or Markdown/MDX directory.
 
 **Parameters:**
 - `config.path` (string): 
   - For JSON: Path to JSON file containing an array (relative or absolute)
-  - For Markdown: Path to directory containing `.md` files (relative or absolute)
+  - For Markdown/MDX: Path to directory containing `.md` or `.mdx` files (relative or absolute)
 - `config.format` (`"json" | "md"`, optional): Content format. If not provided, inferred from path:
   - Paths ending in `.json` → `"json"`
-  - Otherwise → `"md"`
+  - Otherwise → `"md"` (supports both `.md` and `.mdx` files)
 - `config.schema` (ZodSchema<T>, optional): Zod schema for validation
   - For JSON: Validates each array item
-  - For Markdown: Validates frontmatter only (body is always included as string)
+  - For Markdown/MDX: Validates frontmatter only (body is always included as string)
 - `config.transform` ((items: T[]) => T[], optional): Transform function applied after validation
 
 **Returns:** `Collection<T>` with:
@@ -663,8 +694,8 @@ Custom error class for content loading and validation errors.
 
 content-lite is intentionally minimal and has the following limitations:
 
-- **No Markdown rendering**: Returns raw markdown strings, no HTML conversion
-- **No MDX support**: Only standard Markdown files are supported
+- **No Markdown rendering**: Returns raw markdown/MDX strings, no HTML conversion
+- **No MDX compilation**: MDX files are loaded as pass-through (raw content). MDX compilation must be handled by your build pipeline (Next.js MDX plugin, Vite MDX plugin, etc.)
 - **No file watchers**: Content is loaded once at build/import time
 - **No CLI tools**: No command-line interface or dev server
 - **No plugins**: No plugin system or extensibility hooks

@@ -1,30 +1,34 @@
-import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { resolve, join, extname } from 'node:path';
+import { readFileSync, readdirSync, statSync } from 'fs';
+import { resolve, join, extname } from 'path';
 import matter from 'gray-matter';
 import { ContentError } from '../errors.js';
 
 /**
- * Loads a Markdown collection from a directory
+ * Loads a Markdown or MDX collection from a directory
  * 
- * This function is used for standalone Markdown collections with frontmatter.
+ * This function is used for standalone Markdown/MDX collections with frontmatter.
  * It works independently from JSON collections and is the primary pattern for
  * Markdown-based content.
  * 
- * Scans the directory for .md files and parses each file's frontmatter and content.
- * Each .md file becomes one item in the collection with:
+ * Scans the directory for .md and .mdx files and parses each file's frontmatter and content.
+ * Each file becomes one item in the collection with:
  * - All frontmatter fields as properties
- * - A `body` property containing the raw markdown content (without frontmatter)
+ * - A `body` property containing the raw markdown/MDX content (without frontmatter)
+ * 
+ * MDX files are treated as raw Markdown. No compilation occurs.
  * 
  * **When to use:**
  * - Building blogs, documentation, or content-heavy sites
- * - Preferring Markdown for content authoring
+ * - Preferring Markdown or MDX for content authoring
  * - Wanting a file-per-item structure with metadata in frontmatter
  * 
- * **Note:** This is independent from JSON collections. Markdown frontmatter
- * collections are a valid standalone pattern.
+ * **Note:** This is independent from JSON collections. Markdown/MDX frontmatter
+ * collections are a valid standalone pattern. MDX files are treated as pass-through
+ * (raw content), and compilation should be handled by your build pipeline (Next.js,
+ * Vite, etc.).
  * 
- * @param dirPath - Path to directory containing .md files
- * @returns Array of items, one per .md file
+ * @param dirPath - Path to directory containing .md or .mdx files
+ * @returns Array of items, one per .md or .mdx file
  * @throws ContentError if directory cannot be read or files cannot be parsed
  */
 export function loadMarkdownCollection<T = unknown>(dirPath: string): T[] {
@@ -70,12 +74,13 @@ export function loadMarkdownCollection<T = unknown>(dirPath: string): T[] {
     );
   }
 
-  // Filter for .md files only
+  // Filter for .md and .mdx files
   const mdFiles = files.filter((file) => {
     const filePath = join(resolvedPath, file);
     try {
       const fileStats = statSync(filePath);
-      return fileStats.isFile() && extname(file).toLowerCase() === '.md';
+      const ext = extname(file).toLowerCase();
+      return fileStats.isFile() && (ext === '.md' || ext === '.mdx');
     } catch {
       // Skip files we can't stat
       return false;
@@ -84,7 +89,7 @@ export function loadMarkdownCollection<T = unknown>(dirPath: string): T[] {
 
   if (mdFiles.length === 0) {
     throw new ContentError(
-      `No .md files found in directory: ${resolvedPath}`,
+      `No .md or .mdx files found in directory: ${resolvedPath}`,
       resolvedPath
     );
   }

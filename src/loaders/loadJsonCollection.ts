@@ -1,5 +1,5 @@
-import { readFileSync } from 'node:fs';
-import { resolve, dirname } from 'node:path';
+import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
 import { ContentError } from '../errors.js';
 import { loadMarkdownFile } from './loadMarkdownFile.js';
 
@@ -54,19 +54,19 @@ function loadJson<T = unknown>(filePath: string): T {
  * - Building APIs or data-driven sites
  * - Need programmatic content generation
  * 
- * **Optional JSON → Markdown linking:**
- * If items have a `contentPath` property, the referenced Markdown file is loaded
+ * **Optional JSON → Markdown/MDX linking:**
+ * If items have a `contentPath` property, the referenced Markdown or MDX file is loaded
  * and merged as a `body` property. This is an optional advanced pattern - JSON
  * collections work perfectly fine without it. Paths are resolved relative to the
- * JSON file's directory.
+ * JSON file's directory. MDX files are treated as raw content (no compilation).
  * 
  * **Note:** JSON collections are standalone by default. The `contentPath` linking
  * is optional and only needed for advanced use cases where you want JSON metadata
- * with separate Markdown content files.
+ * with separate Markdown/MDX content files.
  * 
  * @param filePath - Path to JSON file containing an array
- * @returns Array of items from the JSON file, with optional `body` property from linked MD files
- * @throws ContentError if the JSON is not an array or if referenced Markdown files are missing
+ * @returns Array of items from the JSON file, with optional `body` property from linked MD/MDX files
+ * @throws ContentError if the JSON is not an array or if referenced Markdown/MDX files are missing
  */
 export function loadJsonCollection<T = unknown>(filePath: string): T[] {
   const data = loadJson<unknown>(filePath);

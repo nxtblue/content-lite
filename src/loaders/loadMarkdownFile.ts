@@ -1,24 +1,26 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 import { ContentError } from '../errors.js';
 
 /**
- * Loads a single Markdown file as raw string content
+ * Loads a single Markdown or MDX file as raw string content
  * 
- * This function is primarily used internally for the optional JSON → Markdown
+ * This function is primarily used internally for the optional JSON → Markdown/MDX
  * linking pattern (when JSON items have a `contentPath` field). It can also
- * be used standalone to load individual Markdown files without frontmatter parsing.
+ * be used standalone to load individual Markdown/MDX files without frontmatter parsing.
+ * 
+ * MDX files are treated as raw Markdown. No compilation occurs.
  * 
  * **When to use:**
- * - Loading Markdown files referenced by JSON collections (via `contentPath`)
- * - Loading standalone Markdown files without frontmatter
- * - Internal use by loadJsonCollection for optional JSON → MD linking
+ * - Loading Markdown/MDX files referenced by JSON collections (via `contentPath`)
+ * - Loading standalone Markdown/MDX files without frontmatter
+ * - Internal use by loadJsonCollection for optional JSON → MD/MDX linking
  * 
- * **Note:** For Markdown collections with frontmatter, use `loadMarkdownCollection`
- * instead. JSON → Markdown linking is an optional advanced pattern.
+ * **Note:** For Markdown/MDX collections with frontmatter, use `loadMarkdownCollection`
+ * instead. JSON → Markdown/MDX linking is an optional advanced pattern.
  * 
- * @param filePath - Path to the Markdown file (relative or absolute)
- * @returns Raw markdown content as string (no frontmatter parsing)
+ * @param filePath - Path to the Markdown or MDX file (relative or absolute)
+ * @returns Raw markdown/MDX content as string (no frontmatter parsing, no MDX compilation)
  * @throws ContentError if file cannot be read or doesn't exist
  */
 export function loadMarkdownFile(filePath: string): string {

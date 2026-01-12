@@ -7,23 +7,26 @@ export interface CollectionConfig<T> {
   /**
    * Path to the content source:
    * - For JSON: path to a JSON file containing an array
-   * - For Markdown: path to a directory containing .md files
+   * - For Markdown/MDX: path to a directory containing .md or .mdx files
    * Can be relative to the current working directory or absolute
    */
   path: string;
 
   /**
-   * Content format: "json" for JSON files, "md" for Markdown files
+   * Content format: "json" for JSON files, "md" for Markdown/MDX files
    * If not provided, format is inferred from the path:
    * - Paths ending in .json → "json"
-   * - Otherwise → "md"
+   * - Otherwise → "md" (supports both .md and .mdx files)
+   * 
+   * Note: MDX files are treated as pass-through (raw content). MDX compilation
+   * should be handled by your build pipeline (Next.js, Vite, etc.).
    */
   format?: 'json' | 'md';
 
   /**
    * Optional Zod schema for validating each item in the collection
    * For JSON: validates each array item
-   * For Markdown: validates frontmatter only (body is always included as string)
+   * For Markdown/MDX: validates frontmatter only (body is always included as string)
    * If provided, each item will be validated against this schema
    */
   schema?: ZodSchema<T>;
