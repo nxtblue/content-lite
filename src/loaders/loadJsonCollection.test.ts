@@ -19,9 +19,18 @@ describe('loadJsonCollection', () => {
   });
 
   it('should throw ContentError if JSON is not an array', () => {
-    // This would require a test fixture with invalid JSON structure
-    // For now, we test the error handling path exists
-    expect(true).toBe(true);
+    expect(() => {
+      loadJsonCollection('./test-fixtures/not-array.json');
+    }).toThrow(ContentError);
+    
+    try {
+      loadJsonCollection('./test-fixtures/not-array.json');
+    } catch (error) {
+      expect(error).toBeInstanceOf(ContentError);
+      if (error instanceof ContentError) {
+        expect(error.message).toContain('Expected JSON file to contain an array');
+      }
+    }
   });
 
   it('should load JSON with linked Markdown files via contentPath', () => {
@@ -47,8 +56,48 @@ describe('loadJsonCollection', () => {
   });
 
   it('should throw ContentError if linked Markdown file is missing', () => {
-    // Create a temporary JSON file with invalid contentPath
-    // For now, we verify the error handling exists
-    expect(true).toBe(true);
+    expect(() => {
+      loadJsonCollection('./test-fixtures/missing-contentpath.json');
+    }).toThrow(ContentError);
+    
+    try {
+      loadJsonCollection('./test-fixtures/missing-contentpath.json');
+    } catch (error) {
+      expect(error).toBeInstanceOf(ContentError);
+      if (error instanceof ContentError) {
+        expect(error.message).toContain('Failed to load markdown content');
+      }
+    }
+  });
+
+  it('should handle invalid JSON syntax', () => {
+    expect(() => {
+      loadJsonCollection('./test-fixtures/invalid-json.json');
+    }).toThrow(ContentError);
+    
+    try {
+      loadJsonCollection('./test-fixtures/invalid-json.json');
+    } catch (error) {
+      expect(error).toBeInstanceOf(ContentError);
+      if (error instanceof ContentError) {
+        expect(error.message).toContain('Failed to parse JSON');
+      }
+    }
+  });
+
+  it('should handle contentPath that is not a valid string', () => {
+    // Create a JSON file with non-string contentPath
+    const items = loadJsonCollection('./test-fixtures/invalid-contentpath.json');
+    // The first item has contentPath as a number, should be included as-is
+    const itemWithNumberPath = items.find((item: any) => item.id === 'item-1');
+    expect(itemWithNumberPath).toBeDefined();
+    expect(itemWithNumberPath?.contentPath).toBe(123);
+    expect(itemWithNumberPath).not.toHaveProperty('body');
+    
+    // The second item has empty string contentPath, should be included as-is
+    const itemWithEmptyPath = items.find((item: any) => item.id === 'item-2');
+    expect(itemWithEmptyPath).toBeDefined();
+    expect(itemWithEmptyPath?.contentPath).toBe('');
+    expect(itemWithEmptyPath).not.toHaveProperty('body');
   });
 });

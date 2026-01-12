@@ -33,8 +33,32 @@ describe('loadMarkdownCollection', () => {
   });
 
   it('should throw ContentError if directory has no .md files', () => {
-    // This would require an empty directory fixture
-    // For now, we verify the error handling exists
-    expect(true).toBe(true);
+    expect(() => {
+      loadMarkdownCollection('./test-fixtures/empty-dir');
+    }).toThrow(ContentError);
+    
+    try {
+      loadMarkdownCollection('./test-fixtures/empty-dir');
+    } catch (error) {
+      expect(error).toBeInstanceOf(ContentError);
+      if (error instanceof ContentError) {
+        expect(error.message).toContain('No .md files found in directory');
+      }
+    }
+  });
+
+  it('should throw ContentError for invalid frontmatter', () => {
+    expect(() => {
+      loadMarkdownCollection('./test-fixtures/invalid-frontmatter-dir');
+    }).toThrow(ContentError);
+    
+    try {
+      loadMarkdownCollection('./test-fixtures/invalid-frontmatter-dir');
+    } catch (error) {
+      expect(error).toBeInstanceOf(ContentError);
+      if (error instanceof ContentError) {
+        expect(error.message).toContain('Failed to parse frontmatter');
+      }
+    }
   });
 });

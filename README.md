@@ -28,13 +28,13 @@ Static site generators and build tools often need a way to load and validate con
 ## Installation
 
 ```bash
-npm install content-lite
+npm install @nxtblue/content-lite
 ```
 
 If you want to use Zod validation (optional):
 
 ```bash
-npm install content-lite zod
+npm install @nxtblue/content-lite zod
 ```
 
 ## Basic Usage
@@ -42,7 +42,7 @@ npm install content-lite zod
 ### JSON Collections
 
 ```typescript
-import { defineCollection } from 'content-lite';
+import { defineCollection } from '@nxtblue/content-lite';
 
 // Define a collection from a JSON file
 const posts = defineCollection({
@@ -57,7 +57,7 @@ const post = posts.getById('my-post-id');
 ### Markdown Collections
 
 ```typescript
-import { defineCollection } from 'content-lite';
+import { defineCollection } from '@nxtblue/content-lite';
 
 // Define a collection from a directory of Markdown files
 const posts = defineCollection({
@@ -110,7 +110,7 @@ Add runtime validation with Zod schemas:
 ### JSON Collections
 
 ```typescript
-import { defineCollection } from 'content-lite';
+import { defineCollection } from '@nxtblue/content-lite';
 import { z } from 'zod';
 
 const postSchema = z.object({
@@ -136,7 +136,7 @@ const allPosts = posts.all();
 For Markdown files, the schema validates frontmatter only. The `body` field (raw markdown content) is always included automatically:
 
 ```typescript
-import { defineCollection } from 'content-lite';
+import { defineCollection } from '@nxtblue/content-lite';
 import { z } from 'zod';
 
 const postSchema = z.object({
@@ -162,7 +162,7 @@ const allPosts = posts.all();
 You can use content-lite without Zod for type-only validation:
 
 ```typescript
-import { defineCollection } from 'content-lite';
+import { defineCollection } from '@nxtblue/content-lite';
 
 interface Post {
   id: string;
@@ -249,7 +249,7 @@ Perfect for both residential and commercial applications.
 The loaded items will have all JSON properties plus a `body` property containing the Markdown content:
 
 ```typescript
-import { defineCollection } from 'content-lite';
+import { defineCollection } from '@nxtblue/content-lite';
 import { z } from 'zod';
 
 const productSchema = z.object({
@@ -339,7 +339,7 @@ Each `.md` file becomes one item in the collection. The frontmatter (YAML betwee
 ### Using Markdown Collections
 
 ```typescript
-import { defineCollection } from 'content-lite';
+import { defineCollection } from '@nxtblue/content-lite';
 import { z } from 'zod';
 
 const postSchema = z.object({
@@ -447,7 +447,7 @@ export type Post = z.infer<typeof postSchema>;
 Create a content file (e.g., `src/content.ts`):
 
 ```typescript
-import { defineCollection } from 'content-lite';
+import { defineCollection } from '@nxtblue/content-lite';
 import { postSchema, type Post } from './schemas.js';
 
 export const posts = defineCollection<Post>({
@@ -572,7 +572,7 @@ const posts = defineCollection({
 content-lite throws `ContentError` for all failures:
 
 ```typescript
-import { defineCollection, ContentError } from 'content-lite';
+import { defineCollection, ContentError } from '@nxtblue/content-lite';
 
 try {
   const posts = defineCollection({

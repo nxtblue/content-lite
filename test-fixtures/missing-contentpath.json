@@ -1,0 +1,7 @@
+[
+  {
+    "id": "item-1",
+    "title": "Invalid contentPath - missing file",
+    "contentPath": "non-existent.md"
+  }
+]

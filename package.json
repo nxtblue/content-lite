@@ -1,26 +1,7 @@
 {
-  "name": "content-lite",
-  "version": "0.1.0",
+  "name": "@nxtblue/content-lite",
+  "version": "1.0.0",
   "description": "A lightweight, type-safe content loader for static sites using JSON and Markdown",
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "prepublishOnly": "npm run build && npm test"
-  },
   "keywords": [
     "content",
     "json",
@@ -30,15 +11,34 @@
     "cms",
     "contentlayer"
   ],
-  "author": "",
-  "license": "MIT",
-  "peerDependencies": {
-    "zod": "^3.0.0"
+  "homepage": "https://github.com/nxtblue/content-lite#readme",
+  "bugs": {
+    "url": "https://github.com/nxtblue/content-lite/issues"
   },
-  "peerDependenciesMeta": {
-    "zod": {
-      "optional": true
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nxtblue/content-lite.git"
+  },
+  "license": "MIT",
+  "author": "NXTBlue Vortex",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
     "gray-matter": "^4.0.3"
@@ -50,5 +50,15 @@
     "vitest": "^2.1.8",
     "zod": "^3.22.0"
   },
+  "peerDependencies": {
+    "zod": "^3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "zod": {
+      "optional": true
+    }
+  },
+  "email": "info@nxtblue.com",
+  "url": "https://github.com/nxtblue/content-lite",
   "sideEffects": false
 }

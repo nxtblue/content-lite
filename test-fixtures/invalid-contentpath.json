@@ -1,0 +1,12 @@
+[
+  {
+    "id": "item-1",
+    "title": "Invalid contentPath - number",
+    "contentPath": 123
+  },
+  {
+    "id": "item-2",
+    "title": "Invalid contentPath - empty string",
+    "contentPath": ""
+  }
+]
