@@ -1,0 +1,25 @@
+[
+  {
+    "id": "product-1",
+    "name": "Aluminium Door",
+    "price": 12000,
+    "published": true,
+    "order": 1,
+    "contentPath": "products/aluminium-door.md"
+  },
+  {
+    "id": "product-2",
+    "name": "Wooden Door",
+    "price": 15000,
+    "published": true,
+    "order": 2,
+    "contentPath": "products/wooden-door.md"
+  },
+  {
+    "id": "product-3",
+    "name": "Simple Product",
+    "price": 5000,
+    "published": true,
+    "order": 3
+  }
+]

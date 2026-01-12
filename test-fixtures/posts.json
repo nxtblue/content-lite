@@ -1,0 +1,16 @@
+[
+  {
+    "id": "post-1",
+    "title": "My First Post",
+    "content": "This is the content of the first post.",
+    "published": true,
+    "tags": ["tech", "javascript"]
+  },
+  {
+    "id": "post-2",
+    "title": "My Second Post",
+    "content": "This is the content of the second post.",
+    "published": false,
+    "tags": ["design"]
+  }
+]

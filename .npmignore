@@ -1,0 +1,33 @@
+# Source files
+src/
+test-fixtures/
+*.test.ts
+*.test.js
+*.config.ts
+*.config.js
+
+# Development files
+.vscode/
+.idea/
+*.log
+.DS_Store
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Git
+.git/
+.gitignore
+
+# Documentation (keep README.md)
+*.md
+!README.md
+
+# TypeScript
+tsconfig.json
+vitest.config.ts
+
+# Node
+node_modules/
+package-lock.json

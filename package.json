@@ -1,0 +1,54 @@
+{
+  "name": "content-lite",
+  "version": "0.1.0",
+  "description": "A lightweight, type-safe content loader for static sites using JSON and Markdown",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "content",
+    "json",
+    "markdown",
+    "static-site",
+    "type-safe",
+    "cms",
+    "contentlayer"
+  ],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "zod": "^3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "zod": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^2.1.8",
+    "typescript": "^5.0.0",
+    "vitest": "^2.1.8",
+    "zod": "^3.22.0"
+  },
+  "sideEffects": false
+}
